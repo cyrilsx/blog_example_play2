@@ -1,0 +1,39 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+#
+# Note: @controllers syntax signifies the actual controller instance, retrieved via GlobalSettings.getController().
+# ~~~~
+
+# Single endpoint for serving AngularJS
+GET     /                           @controllers.ApplicationController.index
+GET     /randomUUID                 @controllers.ApplicationController.randomUUID
+
+# User management API
+GET     /users                      @controllers.UserController.findUsers
+POST    /user                       @controllers.UserController.createUser
+
+# Auth
+POST    /login                      @controllers.UserController.login
+POST    /logout                     @controllers.UserController.logout
+
+# Post management API
+GET     /posts                      @controllers.PostController.findAll
+POST    /post                       @controllers.PostController.create
+PUT     /post                       @controllers.PostController.update
+GET     /post/:permalink            @controllers.PostController.get(permalink: String)
+DELETE  /post/disable/:permalink    @controllers.PostController.desactivate(permalink: String)
+DELETE  /post/:permalink            @controllers.PostController.delete(permalink: String)
+
+# Comment management API
+GET     /comments                  @controllers.CommentController.findAll
+GET     /comments/:postId          @controllers.CommentController.findByPost(postId: String)
+POST    /comment                   @controllers.CommentController.create
+PUT     /comment                   @controllers.CommentController.update
+PUT     /comment/like/:id          @controllers.CommentController.like(id: String)
+PUT     /comment/activate/:id      @controllers.CommentController.activate(id: String)
+DELETE  /comment/:id               @controllers.CommentController.delete(id: String)
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

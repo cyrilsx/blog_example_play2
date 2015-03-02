@@ -1,0 +1,61 @@
+<div class="row">
+    <div ng-controller="CreateServerCtrl as csc">
+        <h1>Create Server</h1>
+
+        <form id="CreateApplicationForm" name="CreateApplicationForm" class="form-horizontal" role="form"
+              ng-submit="csc.createServer()">
+            <legend class="sm-col-12">Basic Information</legend>
+
+            <div class="form-group">
+                <label id="lbl_firstName" for="name" class="col-sm-4 control-label">Name</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="name" id="name" placeholder=""
+                           ng-model="csc.server.name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lbl_url" for="url" class="col-sm-4 control-label">IP address</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="url" id="url" placeholder=""
+                           ng-model="csc.server.url">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lbl_scm" for="owner" class="col-sm-4 control-label">Owner</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="owner" id="owner" placeholder=""
+                           ng-model="csc.server.owner">
+                </div>
+            </div>
+
+
+            <!--<div class="form-group">-->
+                <!--<label id="lbl_active" for="dockerImage" class="col-sm-4 control-label"-->
+                       <!--is-required="CreateApplicationForm.active">Activate</label>-->
+
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="checkbox" class="form-control" name="active" id="active"-->
+                           <!--ng-model="cac.application.active">-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <pre>{{ csc.server | json }}</pre>
+
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8 text-right">
+                    <a ng-href="/#/" id="btn_cancel" class="btn btn-warning">Cancel</a>
+
+                    <button type="submit" class="btn btn-success" id="btn_create">Create Server</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
