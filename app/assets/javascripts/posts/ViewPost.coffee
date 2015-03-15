@@ -2,13 +2,13 @@ class ListPostCtrl
   constructor: (@$log, @$location, @PostService) ->
     @$log.debug "constructing ListPostCtrl"
     @nbElemPage = 10
-    @posts = []
+    @post = {}
     @listAll()
 
-  listAll: () ->
-    @$log.debug "listAll()"
+  getPost: () ->
+    @$log.debug "getPost()"
 
-    @PostService.listAll(0, @nbElemPage)
+    @PostService.(0, @nbElemPage)
     .then(
       (data) =>
         @$log.debug "Promise returned #{data.length} post"

@@ -1,13 +1,15 @@
 package controllers
 
+import java.util.Date
 import javax.inject.Singleton
 
 import org.slf4j.{LoggerFactory, Logger}
-import play.api.libs.json.{Json, JsArray}
+import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
 import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import reactivemongo.api.collections.GenericQueryBuilder
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
@@ -27,9 +29,11 @@ class PostController extends Controller with MongoController {
   import models._
   import models.PostJsonFormats._
 
-  def findAll = Action.async {
-    val futureResults: Future[List[Post]] = collection.find(Json.obj(),
-      Json.obj("publishingDate" -> 1))
+  def findAll(from: Int, to: Int) = Action.async {
+    val queryBuilder: GenericQueryBuilder[JsObject, Reads, Writes] = collection.find(Json.obj())
+    queryBuilder.options.skip(from).batchSize(to - from)
+    val futureResults: Future[List[Post]] = queryBuilder
+      .sort(Json.obj("publishingDate" -> -1))
       .cursor[Post]
       .collect[List]()
 
@@ -58,7 +62,7 @@ class PostController extends Controller with MongoController {
     request =>
       request.body.validate[Post].map {
         post =>
-          collection.insert(post).map {
+          collection.insert(post.copy(publishingDate = Option(new Date()))).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
               Created(s"Server Created")

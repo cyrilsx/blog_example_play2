@@ -2,7 +2,7 @@ package models
 
 import java.util.Date
 
-case class Post(title: String, content: String, publishingDate: Date, url: String, owner: String, permalink: String, activate: Boolean)
+case class Post(title: String, content: String, publishingDate: Option[Date], url: Option[String], owner: Option[String], permalink: String, activate: Boolean)
 
 object PostJsonFormats {
   import play.api.libs.json.Json

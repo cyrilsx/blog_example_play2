@@ -17,7 +17,7 @@ POST    /login                      @controllers.UserController.login
 POST    /logout                     @controllers.UserController.logout
 
 # Post management API
-GET     /posts                      @controllers.PostController.findAll
+GET     /posts/:from/to/:to         @controllers.PostController.findAll(from: Int, to: Int)
 POST    /post                       @controllers.PostController.create
 PUT     /post                       @controllers.PostController.update
 GET     /post/:permalink            @controllers.PostController.get(permalink: String)
