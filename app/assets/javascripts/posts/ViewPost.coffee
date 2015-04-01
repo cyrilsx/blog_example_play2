@@ -8,7 +8,7 @@ class ListPostCtrl
   getPost: () ->
     @$log.debug "getPost()"
 
-    @PostService.(0, @nbElemPage)
+    @PostService.listAll(0, @nbElemPage)
     .then(
       (data) =>
         @$log.debug "Promise returned #{data.length} post"
@@ -18,9 +18,7 @@ class ListPostCtrl
         @$log.error "Unable to get Application: #{error}"
     )
 
-
   delete: (permalink) ->
      @PostService.delete(permalink)
-
 
 controllersModule.controller('ListPostCtrl', ListPostCtrl)

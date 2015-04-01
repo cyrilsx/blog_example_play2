@@ -31,6 +31,33 @@ class PostService
 
   getById: (permalink) ->
     @$log.debug "getById " + permalink
+    deferred = @$q.defer()
+
+    @$http.get("/post/" + permalink)
+    .success((data, status, headers) =>
+      @$log.info("Successfully get post by Id - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to list Services - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
+  getTotal: () ->
+    @$log.debug "get size of posts "
+    deferred = @$q.defer()
+
+    @$http.get("/posts/size")
+    .success((data, status, headers) =>
+      @$log.info("Successfully listed services - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to list Services - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
 
   delete: (permalink) ->
     @$log.debug "delete permalink"

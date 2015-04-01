@@ -20,6 +20,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
   .when('/post/create', {
       templateUrl: '/assets/partials/create_post.html'
     })
+  .when('/post/update/:postId', {
+      templateUrl: '/assets/partials/create_post.html'
+    })
 #  .when('/users/create', {
 #      templateUrl: '/assets/partials/create.html'
 #    })

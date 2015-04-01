@@ -3,20 +3,20 @@ package controllers
 import java.util.Date
 import javax.inject.Singleton
 
-import org.slf4j.{LoggerFactory, Logger}
+import org.slf4j.{Logger, LoggerFactory}
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
 import play.modules.reactivemongo.MongoController
+import play.modules.reactivemongo.json.BSONFormats
 import play.modules.reactivemongo.json.collection.JSONCollection
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import reactivemongo.api.collections.GenericQueryBuilder
+import reactivemongo.bson.BSONDocument
+import reactivemongo.core.commands.Count
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-/**
- * Created by cyril on 06.12.14.
- */
 @Singleton
 class PostController extends Controller with MongoController {
 
@@ -26,8 +26,8 @@ class PostController extends Controller with MongoController {
 
   def collection: JSONCollection = db.collection[JSONCollection]("post")
 
-  import models._
   import models.PostJsonFormats._
+  import models._
 
   def findAll(from: Int, to: Int) = Action.async {
     val queryBuilder: GenericQueryBuilder[JsObject, Reads, Writes] = collection.find(Json.obj())
@@ -48,13 +48,37 @@ class PostController extends Controller with MongoController {
     }
   }
 
+  def size = Action.async {
+    val eventualInt: Future[Int] = count(BSONDocument())
+    eventualInt.map {
+      case size: Int => Ok(Json.toJson(size))
+    }
+  }
+
+  private def count(query: BSONDocument): Future[Int] = {
+    logger.debug(s"Counting documents: " + BSONFormats.toJSON(query))
+    val futureCount = collection.db.command(
+      Count(
+        collection.name,
+        Some(query)
+      )
+    )
+    futureCount
+  }
+
+  import models.PostJsonFormats._
+  import models._
 
   def get(permalink: String) = Action.async {
     val foundPost = collection.find(Json.obj("permalink" -> permalink)).one[Post]
 
-    Future.firstCompletedOf(Seq(foundPost, timeout)).map {
-      case post: Post => Ok(Json.toJson(post).toString())
-      case t: String => InternalServerError("Failure" + t)
+    foundPost.map {
+      case post: Option[Post] => post.map {
+        case p : Post => Ok(Json.toJson(post))
+        case _ => NotFound
+      }.get
+
+      case t => InternalServerError("Failure" + t)
     }
   }
 
@@ -88,7 +112,7 @@ class PostController extends Controller with MongoController {
     val foundPost = collection.find(Json.obj("permalink" -> permalink)).one[Post]
 
     Future.firstCompletedOf(Seq(foundPost, timeout)).map {
-      case post: Post => 
+      case post: Post =>
         val updatedPost = post.copy(activate = false)
         collection.update(Json.obj("permalink" -> updatedPost.permalink), updatedPost).map {
           lastError =>

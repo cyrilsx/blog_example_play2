@@ -1,7 +1,7 @@
 class CreatePostCtrl
-  constructor: (@$log, @$location, @PostService) ->
-    @$log.debug "constructing CreatePostCtrl"
-    @post = {}
+  constructor: (@$routeParams, @$log, @$location, @PostService) ->
+    @$log.debug "constructing CreatePostCtrl " + @$routeParams.postId
+    @post = @PostService.getById(@$routeParams.postId)
     @errors = []
 
 

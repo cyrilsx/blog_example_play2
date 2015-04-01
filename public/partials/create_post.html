@@ -16,7 +16,7 @@
 
                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="name" id="title" placeholder=""
-                           ng-model="cpc.post.title" ng-change="validateTitle()" required>
+                           ng-model="cpc.post.title" ng-change="validateTitle()" required ng-value="cpc.post.title">
                 </div>
             </div>
 
@@ -37,7 +37,7 @@
 
                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="permalink" id="permalink" placeholder=""
-                           ng-model="cpc.post.permalink" ng-change="validatePermalink()" required>
+                           ng-model="cpc.post.permalink" ng-change="validatePermalink()" required ng-value="cpc.post.permalink">
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
 
                 <div class="col-sm-8">
                     <input type="checkbox" class="form-control" value="true" name="active" id="active"
-                           ng-model="cpc.post.activate" ng-change="validateActive()">
+                           ng-model="cpc.post.activate" ng-change="validateActive()" ng-value="cpc.post.activate">
                 </div>
             </div>
 
