@@ -74,7 +74,7 @@ class PostController extends Controller with MongoController {
 
     foundPost.map {
       case post: Option[Post] => post.map {
-        case p : Post => Ok(Json.toJson(post))
+        case p: Post => Ok(Json.toJson(post))
         case _ => NotFound
       }.get
 
@@ -125,7 +125,7 @@ class PostController extends Controller with MongoController {
   }
 
   def delete(permalink: String) = Action.async {
-    collection.remove(Json.obj("name" -> permalink))
+    collection.remove(Json.obj("permalink" -> permalink))
     Future.successful(Ok(s"Server Updated"))
   }
 

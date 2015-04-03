@@ -1,8 +1,27 @@
 class CreatePostCtrl
   constructor: (@$routeParams, @$log, @$location, @PostService) ->
-    @$log.debug "constructing CreatePostCtrl " + @$routeParams.postId
-    @post = @PostService.getById(@$routeParams.postId)
+    postId = @$routeParams.postId
+    @$log.debug "constructing CreatePostCtrl #{postId}"
+    @post = {}
+
+    # Manage update or create case
+    if (postId)
+      @title = "Update #{postId}"
+      @updateOrCreateFunction = (post) -> @PostService.update(post)
+      @PostService.getById(postId).then(
+        (data) =>
+          @$log.debug "Promise returned #{data.length} post"
+          @post = data
+      ,
+        (error) =>
+          @$log.error "Unable to get Application: #{error}"
+      )
+    else
+      @title = "Create"
+      @updateOrCreateFunction = (post) -> @PostService.create(post)
+
     @errors = []
+    @$log.debug "finish constructor"
 
 
   validateTitle: () ->
@@ -40,18 +59,16 @@ class CreatePostCtrl
 
   createPost: () ->
     @$log.debug "createPost()"
-
-    @PostService.create(@post)
+    @updateOrCreateFunction(@post)
     .then(
       (data) =>
         @$log.debug "Promise returned #{data} post"
         @post = data
-        @$location.path("/")
+        @$location.path("#/post/#{@post.postId}")
     ,
       (error) =>
         @$log.error "Unable to create post: #{error}"
     )
-
 
 
 controllersModule.controller('CreatePostCtrl', CreatePostCtrl)

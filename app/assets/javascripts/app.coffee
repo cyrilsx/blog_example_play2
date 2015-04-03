@@ -15,13 +15,16 @@ angular.module('myApp.routeConfig', ['ngRoute'])
 .config ($routeProvider) ->
   $routeProvider
   .when('/', {
-      templateUrl: '/assets/partials/post.html'
+      templateUrl: '/assets/partials/post/list.html'
     })
   .when('/post/create', {
-      templateUrl: '/assets/partials/create_post.html'
+      templateUrl: '/assets/partials/post/edit.html'
     })
   .when('/post/update/:postId', {
-      templateUrl: '/assets/partials/create_post.html'
+      templateUrl: '/assets/partials/post/edit.html'
+    })
+  .when('/post/view/:postId', {
+      templateUrl: '/assets/partials/post/view.html'
     })
 #  .when('/users/create', {
 #      templateUrl: '/assets/partials/create.html'

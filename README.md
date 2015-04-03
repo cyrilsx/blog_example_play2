@@ -10,15 +10,15 @@ Your development environment will require:
 Once the prerequisites have been installed, you will be able to execute the following from a terminal.
 
 ```
-../modern-web-template >  play run
+../play_blog >  play run
 ```
 
 This should fetch all the dependencies and start a Web Server listening on *localhost:9000*
 
 ```
-[info] Loading project definition from ../modern-web-template/project
-[info] Set current project to modern-web-template
-[info] Updating modern-web-template...
+[info] Loading project definition from ../play_blog/project
+[info] Set current project to play_blog
+[info] Updating play_blog...
 ...
 [info] Done updating.
 

@@ -1,6 +1,6 @@
 <div class="row">
     <div ng-controller="CreatePostCtrl as cpc">
-        <h1>Create Post</h1>
+        <h1>{{ cpc.title }}</h1>
 
         <form id="CreatePostForm" name="CreatePostForm" class="form-horizontal" role="form">
             <legend class="sm-col-12">Post Information</legend>
@@ -47,7 +47,7 @@
 
                 <div class="col-sm-8">
                     <input type="checkbox" class="form-control" value="true" name="active" id="active"
-                           ng-model="cpc.post.activate" ng-change="validateActive()" ng-value="cpc.post.activate">
+                           ng-model="cpc.post.activate" ng-change="validateActive()" ng-value="cpc.scope.post.activate">
                 </div>
             </div>
 

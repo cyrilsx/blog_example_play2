@@ -1,0 +1,19 @@
+<article ng-controller="ViewPostCtrl as vpc">
+    <a href="#/post/{{ vpc.post.permalink }}"><h1>{{ vpc.post.title }}</h1></a>
+    <aside class="text-muted">
+        <small>On {{ vpc.post.publishingDate }} by {{ vpc.post.author }}</small>
+        <nav>
+            <ul>
+                <li><a href="#/post/update/{{ vpc.post.permalink }}">Update</a></li>
+                <li>
+                    <button ng-click="delete()">Delete</button>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <p>
+        {{ vpc.post.content }}
+    </p>
+
+</article>

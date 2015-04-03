@@ -65,11 +65,11 @@ class PostService
 
     @$http.delete("/post/" + permalink)
     .success((data, status, headers) =>
-      @$log.info("Successfully listed services - status #{status}")
+      @$log.info("Successfully delete post #{permalink} - status #{status}")
       deferred.resolve(data)
     )
     .error((data, status, headers) =>
-      @$log.error("Failed to list Services - status #{status}")
+      @$log.error("Failed to delete post #{permalink} - status #{status}")
       deferred.reject(data);
     )
     deferred.promise

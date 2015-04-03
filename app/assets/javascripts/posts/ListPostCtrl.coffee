@@ -38,6 +38,15 @@ class ListPostCtrl
 
   delete: (permalink) ->
      @PostService.delete(permalink)
+     .then(
+       (data) =>
+         @$log.debug "Post #{permalink} deleted"
+         @listAll()
+     ,
+       (error) =>
+         @$log.debug "Can't delete post #{permalink} deleted"
+
+     )
 
 
 controllersModule.controller('ListPostCtrl', ListPostCtrl)

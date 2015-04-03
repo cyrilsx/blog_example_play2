@@ -1,15 +1,21 @@
+<nav>
+    <ul>
+        <li><a href="#/post/create">Create new post</a></li>
+    </ul>
+</nav>
+
 <div class="row" ng-controller="ListPostCtrl as listController">
     &NonBreakingSpace;
 
     <div ng-repeat="post in listController.posts">
         <article>
-            <a href="#/post/{{ post.permalink }}"><h1>{{ post.title }}</h1></a>
+            <a href="#/post/view/{{ post.permalink }}"><h1 class="bg-primary">{{ post.title }}</h1></a>
             <aside class="text-muted">
                 <small>On {{ post.publishingDate }} by {{ post.author }}</small>
                 <nav>
                     <ul>
                         <li><a href="#/post/update/{{ post.permalink }}">Update</a></li>
-                        <li><button ng-click="delete()">Delete</button></li>
+                        <li><button ng-click="listController.delete(post.permalink)">Delete</button></li>
                     </ul>
                 </nav>
             </aside>
@@ -19,13 +25,18 @@
             </p>
 
         </article>
+        <hr />
     </div>
 
 
     <nav>
         <ul class="pagination">
             <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            <li ng-repeat="elem in listController.pageRange" class="{{listController.getActive(elem)}}">
+                <a ng-click="listController.changePage(elem)" href="#">{{ elem }}
+                    <span ng-show="elem == listController.currentPage" class="sr-only">(current)</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </div>
