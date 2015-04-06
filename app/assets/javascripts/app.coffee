@@ -24,11 +24,20 @@ angular.module('myApp.routeConfig', ['ngRoute'])
       templateUrl: '/assets/partials/post/edit.html'
     })
   .when('/post/view/:postId', {
-      templateUrl: '/assets/partials/post/view.html'
+      templateUrl: '/assets/partials/post/list.html'
     })
-#  .when('/users/create', {
-#      templateUrl: '/assets/partials/create.html'
-#    })
+  .when('/user/create', {
+      templateUrl: '/assets/partials/user/create.html'
+    })
+  .when('/user/update/:email', {
+      templateUrl: '/assets/partials/user/edit.html'
+    })
+  .when('/users/', {
+      templateUrl: '/assets/partials/user/list.html'
+    })
+  .when('/user/login/', {
+      templateUrl: '/assets/partials/user/login.html'
+    })
 #  .when('/apps', {
 #      templateUrl: '/assets/partials/post.html'
 #    })

@@ -13,12 +13,10 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import reactivemongo.api.Cursor
 
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
 
 /**
  * The Users controllers encapsulates the Rest endpoints and the interaction with the MongoDB, via ReactiveMongo
  * play plugin. This provides a non-blocking driver for mongoDB as well as some useful additions for handling JSon.
- * @see https://github.com/ReactiveMongo/Play-ReactiveMongo
  */
 @Singleton
 class UserController extends Controller with MongoController {
@@ -43,16 +41,36 @@ class UserController extends Controller with MongoController {
 
   def createUser = Action.async(parse.json) {
     request =>
-      request.body.validate[User].map {
+      request.body.validate[LoginForm].map {
         user =>
           if (user.password.isEmpty) {
-            Future.successful(BadRequest("password is mandatory"))
+            Future.successful(BadRequest("password/passwordRepeat is mandatory"))
+          } else if (user.password != user.passwordRepeat.getOrElse("")) {
+            Future.successful(BadRequest("password are not matching"))
           } else {
             // `user` is an instance of the case class `models.User`
-            collection.insert(user.copy(password = Option(BCrypt.hashpw(user.password.get, BCrypt.gensalt())))).map {
+            collection.insert(User(user.email, user.email, Option.empty, Option.empty, Option(BCrypt.hashpw(user.password, BCrypt.gensalt())), Option.empty, active = false)).map {
               lastError =>
                 logger.debug(s"Successfully inserted with LastError: $lastError")
                 Created(s"User Created")
+            }
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+
+  def updateUser = Action.async(parse.json) {
+    request =>
+      request.body.validate[User].map {
+        user =>
+          if (user.password.nonEmpty) {
+            Future.successful(BadRequest("password cannot be update with a simple edit"))
+          } else {
+            // `user` is an instance of the case class `models.User`
+            collection.update(Json.obj("email" -> user.email), user.copy(password = Option.empty)).map {
+              lastError =>
+                logger.debug(s"Successfully update User with LastError: $lastError")
+                Ok(s"User Updated")
             }
           }
       }.getOrElse(Future.successful(BadRequest("invalid json")))
@@ -62,9 +80,9 @@ class UserController extends Controller with MongoController {
     // let's do our query
     val cursor: Cursor[User] = collection.
       // find all
-      find(Json.obj("active" -> true)).
+      find(Json.obj("active" -> false)).
       // sort them by creation date
-      sort(Json.obj("created" -> -1)).
+      //      sort(Json.obj("created" -> -1)).
       // perform the query and get a cursor of JsObject
       cursor[User]
 
@@ -83,13 +101,25 @@ class UserController extends Controller with MongoController {
   }
 
 
+  def getUser(email: String) = Action.async {
+    val foundUser = collection.find(Json.obj("email" -> email)).one[User]
+
+    foundUser.map {
+      case user: Option[User] => user.map {
+        case p: User => Ok(Json.toJson(user))
+      }.getOrElse(NotFound)
+
+      case t => InternalServerError("Failure" + t)
+    }
+  }
+
+
   def login = Action.async(parse.json) {
     request =>
       request.body.validate[LoginForm].map {
         loginForm =>
-          Future.successful(BadRequest("password are not matching"))
-          if (loginForm.password != loginForm.passwordRepeat) {
-            Future.successful(BadRequest("password are not matching"))
+          if (loginForm.password.isEmpty) {
+            Future.successful(BadRequest("password cannot be empty"))
           } else {
             processLogin(loginForm)
           }

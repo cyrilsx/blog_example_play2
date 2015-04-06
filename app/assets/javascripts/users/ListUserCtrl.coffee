@@ -1,8 +1,8 @@
 
-class UserCtrl
+class ListUserCtrl
 
     constructor: (@$log, @UserService) ->
-        @$log.debug "constructing UserController"
+        @$log.debug "constructing ListUserController"
         @users = []
         @getAllUsers()
 
@@ -20,4 +20,4 @@ class UserCtrl
             )
 
 
-controllersModule.controller('UserCtrl', UserCtrl)
+controllersModule.controller('ListUserCtrl', ListUserCtrl)

@@ -1,22 +1,21 @@
-<nav>
-    <ul>
-        <li><a href="#/post/create">Create new post</a></li>
-    </ul>
-</nav>
-
 <div class="row" ng-controller="ListPostCtrl as listController">
     &NonBreakingSpace;
 
     <div ng-repeat="post in listController.posts">
         <article>
-            <a href="#/post/view/{{ post.permalink }}"><h1 class="bg-primary">{{ post.title }}</h1></a>
+            <h3><a href="#/post/view/{{ post.permalink }}">{{ post.title }} <span class="label label-default">New</span></a>
+            </h3>
             <aside class="text-muted">
                 <small>On {{ post.publishingDate }} by {{ post.author }}</small>
-                <nav>
-                    <ul>
-                        <li><a href="#/post/update/{{ post.permalink }}">Update</a></li>
-                        <li><button ng-click="listController.delete(post.permalink)">Delete</button></li>
-                    </ul>
+                <nav class="nav-right">
+                    <div class="btn-group" role="group">
+                        <a class="btn glyphicon glyphicon-edit glyphicon-align-left"
+                           href="#/post/update/{{ post.permalink }}">Update
+                        </a>
+                        <a class="btn glyphicon glyphicon-remove-sign glyphicon-align-left" href="#" ng-click="listController.delete(post.permalink)">
+                            Delete
+                        </a>
+                    </div>
                 </nav>
             </aside>
 
@@ -25,7 +24,7 @@
             </p>
 
         </article>
-        <hr />
+        <hr/>
     </div>
 
 

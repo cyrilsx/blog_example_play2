@@ -7,7 +7,6 @@ class CreateUserCtrl
 
     createUser: () ->
         @$log.debug "createUser()"
-        @user.active = true
         @UserService.createUser(@user)
         .then(
             (data) =>
@@ -19,4 +18,4 @@ class CreateUserCtrl
                 @$log.error "Unable to create User: #{error}"
             )
 
-controllersModule.controller('CreateUserCtrl', CreateUserCtrl)
+controllersModule.controller('LoginCtrl', CreateUserCtrl)

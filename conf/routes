@@ -10,7 +10,9 @@ GET     /randomUUID                 @controllers.ApplicationController.randomUUI
 
 # User management API
 GET     /users                      @controllers.UserController.findUsers
+GET     /user/:email                @controllers.UserController.getUser(email: String)
 POST    /user                       @controllers.UserController.createUser
+PUT     /user                       @controllers.UserController.updateUser
 
 # Auth
 POST    /login                      @controllers.UserController.login

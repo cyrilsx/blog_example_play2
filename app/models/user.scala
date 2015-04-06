@@ -1,14 +1,16 @@
 package models
 
 case class User( email: String,
+                 displayName: String,
                  firstName: Option[String],
                  lastName: Option[String],
                  password: Option[String],
+                 age: Option[String],
                  active: Boolean)
 
 case class LoginForm(email: String,
                       password: String,
-                      passwordRepeat: String)
+                      passwordRepeat: Option[String])
 
 
 object UserJsonFormats {
