@@ -131,7 +131,7 @@ class UserController extends Controller with MongoController {
     eventualUser.map {
       user =>
         if (BCrypt.checkpw(loginForm.password, user.get.password.get)) {
-          Redirect(controllers.routes.ApplicationController.index).withSession(Security.username -> user.get.email)
+          Ok(Json.toJson(user)).withSession(Security.username -> user.get.email)
         } else {
           BadRequest("credential invalid")
         }

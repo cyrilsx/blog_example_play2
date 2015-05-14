@@ -3,8 +3,7 @@ class NavCtrl
   constructor: (@$log, @$scope, @$location, @UserService) ->
     @$log.debug "constructing NavCtrl"
     @menu = {}
-    @$scope.$on("UserLoggedIn", @refreshMenu())
-    @$scope.$on("userLoggedOut", @refreshMenu())
+    @UserService.$watch("user", @refreshMenu(), true)
     @refreshMenu()
 
   refreshMenu: () ->

@@ -1,6 +1,6 @@
 class LoginCtrl
 
-    constructor: (@$log, @$scope, @$location,  @UserService) ->
+    constructor: (@$log, @$rootScope, @$location,  @UserService) ->
         @$log.debug "constructing LoginCtrl"
         @loginForm = {}
 
@@ -10,7 +10,7 @@ class LoginCtrl
         .then(
             (data) =>
                 @$log.debug "Promise returned #{data} User"
-                @$scope.$broadcast("UserLoggedIn")
+                @$rootScope.user = data
                 @$location.path("/")
             ,
             (error) =>
@@ -20,7 +20,7 @@ class LoginCtrl
     logout: () ->
       @$log.debug "login(#{@loginForm.email})"
       @UserService.logout()
-      @$scope.$broadcast("userLoggedOut")
+      @$rootScope.$broadcast("userLoggedOut")
       @$location.path("/")
 
 
