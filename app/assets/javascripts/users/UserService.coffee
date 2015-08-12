@@ -5,7 +5,7 @@ class UserService
   @logged = false
   @user = {}
 
-  constructor: (@$log, @$http, @$q) ->
+  constructor: (@$log, @$http, @$q, @LoginNotificationService) ->
     @$log.debug "constructing UserService"
 
   listUsers: () ->
@@ -69,6 +69,7 @@ class UserService
       @$log.info("Successfully login user #{loginForm.email} - status #{status}")
       @user = data
       @logged = @user.email == loginForm.email
+      @LoginNotificationService.notify()
       deferred.resolve(data)
     )
     .error((data, status, headers) =>
@@ -81,6 +82,7 @@ class UserService
     @$http.post("/logout")
     @user = {}
     @logged = false
+    @LoginNotificationService.notify()
 
 
 servicesModule.service('UserService', UserService)

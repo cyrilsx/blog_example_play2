@@ -1,6 +1,6 @@
 class LoginCtrl
 
-    constructor: (@$log, @$rootScope, @$location,  @UserService) ->
+    constructor: (@$log, @$rootScope, @$scope, @$location,  @UserService) ->
         @$log.debug "constructing LoginCtrl"
         @loginForm = {}
 
@@ -10,8 +10,8 @@ class LoginCtrl
         .then(
             (data) =>
                 @$log.debug "Promise returned #{data} User"
-                @$rootScope.user = data
                 @$location.path("/")
+                @$scope.apply()
             ,
             (error) =>
                 @$log.error "Unable to create User: #{error}"
@@ -20,7 +20,6 @@ class LoginCtrl
     logout: () ->
       @$log.debug "login(#{@loginForm.email})"
       @UserService.logout()
-      @$rootScope.$broadcast("userLoggedOut")
       @$location.path("/")
 
 

@@ -1,12 +1,14 @@
 class NavCtrl
 
-  constructor: (@$log, @$scope, @$location, @UserService) ->
+  constructor: (@$log, @$scope, @$location, @LoginNotificationService, @UserService) ->
     @$log.debug "constructing NavCtrl"
     @menu = {}
-    @UserService.$watch("user", @refreshMenu(), true)
+    @LoginNotificationService.subscribe(@$scope, @refreshMenu)
     @refreshMenu()
 
   refreshMenu: () ->
+    #  NavCtrl.$inject = ['log', 'scope', 'location', 'LoginNotificationService', 'UserService']
+
     if(@UserService.logged)
       @$log.debug "user is logged"
       @buildLoggedMenu(@UserService.user)
