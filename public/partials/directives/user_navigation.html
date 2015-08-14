@@ -3,6 +3,9 @@
         <input type="text" class="form-control" placeholder="Search">
     </div>
     <button type="submit" class="btn btn-default">Go!</button>
-    <a ng-repeat="item in menu" class="btn btn-primary" ng-click="{{item.action}}" href="{{item.url}}">{{item.title}}</a>
+    <!--<a ng-repeat="item in menu" class="btn btn-primary" ng-click="{{item.action}}" href="{{item.url}}">{{item.title}}</a>-->
+    <a ng-show="loginBtn" class="btn btn-primary" href="#/user/login">Sign In</a>
+    <button ng-show="logoutBtn" class="btn btn-primary" ng-click="logout()">Logout</button>
+    <a ng-show="createPostBtn" class="btn btn-primary" href="#/post/create">Create Post</a>
     <!--<a class="btn btn-primary" href="#/user/login">Sign In</a>-->
 </form>

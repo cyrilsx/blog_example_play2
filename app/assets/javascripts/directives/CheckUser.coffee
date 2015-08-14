@@ -4,37 +4,21 @@ directivesModule.directive('userNavigation', ->
   menu: '='
   restrict: 'E',
   controller: ($scope, LoginNotificationService, UserService) ->
-    $scope.menu = {}
 
-    @logout = ->
+    $scope.logout = ->
       UserService.logout()
       @refreshMenu()
 
     @refreshMenu = ->
       console.log("Receive event #{UserService.user}")
-      if not UserService.logged
-        $scope.menu = [
-#          {
-#            title: "Create Post",
-#            url: "#/post/create"
-#          },
-          {
-            title: "Sign In",
-            url: "#/user/login"
-          }
-        ]
+      if UserService.logged
+        $scope.loginBtn=undefined
+        $scope.logoutBtn=true
+        $scope.createPostBtn=true
       else
-        $scope.menu = [
-          {
-            title: "Create Post",
-            url: "#/post/create"
-          },
-          {
-            title: "Logout #{UserService.user.displayName}",
-            url: "#",
-            action: "logout()"
-          },
-        ]
+        $scope.loginBtn=true
+        $scope.logoutBtn=undefined
+        $scope.createPostBtn=undefined
     @refreshMenu()
     LoginNotificationService.subscribe($scope, @refreshMenu)
 )
