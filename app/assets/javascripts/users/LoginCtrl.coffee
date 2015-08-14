@@ -11,7 +11,7 @@ class LoginCtrl
             (data) =>
                 @$log.debug "Promise returned #{data} User"
                 @$location.path("/")
-                @$scope.apply()
+                #@$scope.$apply()
             ,
             (error) =>
                 @$log.error "Unable to create User: #{error}"
