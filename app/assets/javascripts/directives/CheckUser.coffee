@@ -7,7 +7,7 @@ directivesModule.directive('userNavigation', ->
 
     $scope.logout = ->
       UserService.logout()
-      @refreshMenu()
+      # @refreshMenu()
 
     @refreshMenu = ->
       console.log("Receive event #{UserService.user}")

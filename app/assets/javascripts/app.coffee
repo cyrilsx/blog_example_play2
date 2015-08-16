@@ -11,6 +11,23 @@ dependencies = [
 
 app = angular.module('myApp', dependencies)
 
+
+app.config ($httpProvider) ->
+  $httpProvider.interceptors.push(['$q', '$location', ($q, $location) ->
+    request: (config) -> config
+    requestError: (rejection) -> rejection
+    response: (response) -> response
+
+    responseError: (response) ->
+      if response.status == 401
+        $location.path('#/user/login/')
+        return $q.reject(response)
+      else
+        return $q.reject(response)
+  ])
+
+  $httpProvider.defaults.withCredentials = true
+
 angular.module('myApp.routeConfig', ['ngRoute'])
 .config ($routeProvider) ->
   $routeProvider

@@ -8,7 +8,7 @@
             <aside class="text-muted">
                 <small>On {{ post.publishingDate }} by {{ post.author }}</small>
                 <nav class="nav-right">
-                    <div class="btn-group" role="group">
+                    <div ng-show="listController.anonymous" class="btn-group" role="group">
                         <a class="btn glyphicon glyphicon-edit glyphicon-align-left"
                            href="#/post/update/{{ post.permalink }}">Update
                         </a>

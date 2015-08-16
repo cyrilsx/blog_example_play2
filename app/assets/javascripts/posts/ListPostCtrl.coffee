@@ -1,10 +1,11 @@
 class ListPostCtrl
-  constructor: (@$log, @$location, @PostService) ->
+  constructor: (@$log, @$location, @PostService, @UserService) ->
     @$log.debug "constructing ListPostCtrl"
     @nbElemPage = 10
     @currentPage = 1
     @posts = []
     @pageRange = [1..@totalPage]
+    @anonymous = @UserService.logged
     @listAll()
 
   totalPage: () ->

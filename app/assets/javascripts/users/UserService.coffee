@@ -5,7 +5,7 @@ class UserService
   @logged = false
   @user = {}
 
-  constructor: (@$log, @$http, @$q, @LoginNotificationService) ->
+  constructor: (@$log, @$http, @$q, @LoginNotificationService, @$location) ->
     @$log.debug "constructing UserService"
 
   listUsers: () ->
@@ -83,6 +83,7 @@ class UserService
     @user = {}
     @logged = false
     @LoginNotificationService.notify()
+    @$location.path("/")
 
 
 servicesModule.service('UserService', UserService)
